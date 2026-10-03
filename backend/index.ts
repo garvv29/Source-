@@ -8,10 +8,10 @@ import { tavily } from "@tavily/core";
 import {
     PROMPT_TEMPLATE,
     SYSTEM_PROMPT,
-} from "./prompt";
+} from "./prompt.ts";
 
-import { prisma } from "./db";
-import { middleware } from "./middleware/middleware";
+import { prisma } from "./db.ts";
+import { middleware } from "./middleware/middleware.ts";
 
 const app = express();
 
