@@ -3,18 +3,18 @@
 
 @keyframes answer-word-in {
   from {
-    opacity: 0.25;
-    transform: translateY(3px);
+    opacity: 0.12;
+    transform: translateY(0.18em) scale(0.985);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .answer-word-in {
   display: inline-block;
-  animation: answer-word-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: answer-word-in 160ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

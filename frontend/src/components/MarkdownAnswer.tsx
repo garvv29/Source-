@@ -37,15 +37,17 @@ function inline(text: string, sources: AnswerSource[], animateWords = false): Re
 function plainText(text: string, offset: number, animateWords: boolean): ReactNode[] {
     if (!animateWords) return [text];
 
+    let wordIndex = 0;
     return [...text.matchAll(/\S+|\s+/g)].map((match, index) => {
         const value = match[0];
         if (!value || /^\s+$/.test(value)) return value;
         const wordOffset = offset + (match.index ?? index);
+        const animationDelay = (wordIndex++ % 7) * 20;
         return (
             <span
                 key={`word-${wordOffset}`}
                 className="answer-word-in"
-                style={{ animationDelay: `${(index % 4) * 18}ms` }}
+                style={{ animationDelay: `${animationDelay}ms` }}
             >
                 {value}
             </span>
