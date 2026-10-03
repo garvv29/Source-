@@ -7,6 +7,7 @@ const server = serve({
     "/*": index,
 
     "/api/hello": {
+
       async GET(req) {
         return Response.json({
           message: "Hello, world!",

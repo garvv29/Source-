@@ -16,6 +16,11 @@ const result = await Bun.build({
   sourcemap: "linked",
   define: {
     "process.env.NODE_ENV": JSON.stringify("production"),
+    "import.meta.env.VITE_SUPABASE_URL":
+            JSON.stringify(Bun.env.VITE_SUPABASE_URL),
+
+        "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY":
+            JSON.stringify(Bun.env.VITE_SUPABASE_PUBLISHABLE_KEY),
   },
 });
 
