@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
-import { createSupabaseClient } from "../client";
-import { prisma } from "../db";
+import { createSupabaseClient } from "../client.ts";
+import { prisma } from "../db.ts";
 
 const client = createSupabaseClient();
 
