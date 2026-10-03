@@ -27,7 +27,7 @@ const result = await Bun.build({
             JSON.stringify(Bun.env.VITE_SUPABASE_PUBLISHABLE_KEY),
     "import.meta.env.VITE_BACKEND_URL":
             JSON.stringify(Bun.env.VITE_BACKEND_URL ?? "http://localhost:3001"),
-    "process.env.VITE_BACKEND_URL":
+    __SOURCE_BACKEND_URL__:
             JSON.stringify(Bun.env.VITE_BACKEND_URL ?? "http://localhost:3001"),
   },
 });
