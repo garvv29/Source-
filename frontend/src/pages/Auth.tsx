@@ -9,10 +9,10 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 export default function Auth() {
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<"github" | "google" | null>(null);
 
-    async function login(provider: "github") {
-        setLoading(true);
+    async function login(provider: "github" | "google") {
+        setLoading(provider);
         setError("");
         const { error } = await supabase.auth.signInWithOAuth({
             provider,
@@ -20,7 +20,7 @@ export default function Auth() {
         });
         if (error) {
             setError(error.message);
-            setLoading(false);
+            setLoading(null);
         }
     }
 
@@ -43,9 +43,30 @@ export default function Auth() {
                         <h1 className="text-2xl font-medium tracking-[-0.045em]">Get back to the receipts.</h1>
                         <p className="mt-2 text-sm leading-6 text-zinc-500">Sign in to search, keep your history, and follow the sources.</p>
                     </div>
-                    <Button disabled={loading} onClick={() => login("github")} className="h-11 w-full rounded-lg bg-zinc-100 text-zinc-950 hover:bg-white disabled:opacity-60">
-                        <Code2 className="h-4 w-4" /> {loading ? "Connecting to GitHub…" : "Continue with GitHub"}
-                    </Button>
+                    <div className="space-y-3">
+                        <Button
+                            disabled={loading !== null}
+                            onClick={() => login("github")}
+                            className="h-11 w-full rounded-lg bg-zinc-100 text-zinc-950 hover:bg-white disabled:opacity-60"
+                        >
+                            <Code2 className="h-4 w-4" />
+                            {loading === "github"
+                                ? "Connecting to GitHub…"
+                                : "Continue with GitHub"}
+                        </Button>
+
+                        <Button
+                            disabled={loading !== null}
+                            onClick={() => login("google")}
+                            variant="outline"
+                            className="h-11 w-full border-white/[0.1] bg-white/[0.03] text-zinc-100 hover:bg-white/[0.07] disabled:opacity-60"
+                        >
+                            <span className="text-sm font-semibold">G</span>
+                            {loading === "google"
+                                ? "Connecting to Google…"
+                                : "Continue with Google"}
+                        </Button>
+                    </div>
                     {error && <p role="alert" className="mt-4 rounded-lg border border-red-400/15 bg-red-400/[0.04] px-3 py-2 text-sm text-red-300">{error}</p>}
                     <div className="mt-6 flex items-start gap-2.5 border-t border-white/[0.07] pt-5 text-xs leading-5 text-zinc-600">
                         <Search className="mt-0.5 h-3.5 w-3.5 shrink-0" />
