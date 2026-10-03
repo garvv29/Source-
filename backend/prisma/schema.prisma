@@ -11,10 +11,10 @@ datasource db {
 
 model User{
     id String @id @default(uuid())
-    email String
+    email String @unique
     provider AuthProvider
-    username String
-    supabaseId String
+    username String?
+    supabaseId String @unique
     conversations Conversation[]
 }
 
@@ -26,18 +26,21 @@ enum AuthProvider {
 model Conversation {
     id String @id @default(uuid())
     title String?
-    slug String
+    slug String @default(uuid())
     messages Message[]
     userId String
-    user User @relation(fields: [userId], references: [id])
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Message {
     id Int @id @default(autoincrement())
     content String
+    sources Json?
     role messageRole
     conversationId String
-    conversation Conversation @relation(fields: [conversationId], references: [id])
+    conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
     createdAt DateTime @default(now())
 }
 

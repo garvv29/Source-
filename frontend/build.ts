@@ -5,6 +5,10 @@ import path from "node:path";
 const outdir = path.join(process.cwd(), "dist");
 await rm(outdir, { recursive: true, force: true });
 
+if (Bun.env.VERCEL && !Bun.env.VITE_BACKEND_URL) {
+  throw new Error("Set VITE_BACKEND_URL in Vercel to your deployed API URL before building.");
+}
+
 const entrypoints = [...new Bun.Glob("src/**/*.html").scanSync()];
 
 const result = await Bun.build({
@@ -21,6 +25,8 @@ const result = await Bun.build({
 
         "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY":
             JSON.stringify(Bun.env.VITE_SUPABASE_PUBLISHABLE_KEY),
+    "import.meta.env.VITE_BACKEND_URL":
+            JSON.stringify(Bun.env.VITE_BACKEND_URL ?? "http://localhost:3001"),
   },
 });
 

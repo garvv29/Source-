@@ -1,23 +1,27 @@
 {
-  "name": "backend",
+  "name": "source-trust-me-bro-api",
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "start": "bun run dev.ts",
+    "postinstall": "prisma generate"
+  },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/node": "^26.6.4",
     "prisma": "7"
-  },
-  "peerDependencies": {
-    "typescript": "^7"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "7",
+    "@supabase/supabase-js": "^2.117.2",
     "@tavily/core": "^0.7.13",
+    "@types/node": "^26.6.4",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "axios": "^1.20.0",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
     "openai": "^7.25.0"
-  },
-  "scripts": {}
+  }
 }
