@@ -121,7 +121,16 @@ export default function Dashboard() {
             const viewport = chatScrollRef.current?.querySelector<HTMLElement>(
                 '[data-slot="scroll-area-viewport"]',
             );
-            if (viewport) viewport.scrollTop = viewport.scrollHeight;
+            const answer = chatScrollRef.current?.querySelector<HTMLElement>(
+                "[data-answer-scroll-target]",
+            );
+            if (!viewport || !answer) return;
+
+            const viewportBottom = viewport.getBoundingClientRect().bottom;
+            const answerBottom = answer.getBoundingClientRect().bottom;
+            if (answerBottom > viewportBottom) {
+                viewport.scrollTop += answerBottom - viewportBottom;
+            }
         });
 
         return () => cancelAnimationFrame(frame);
@@ -1249,6 +1258,7 @@ export default function Dashboard() {
                                                             message
                                                         }
                                                         animateWords={loading && index === messages.length - 1 && message.role === "assistant"}
+                                                        scrollTarget={index === messages.length - 1 && message.role === "assistant"}
                                                         loading={
                                                             loading &&
                                                             index ===
@@ -1481,6 +1491,7 @@ function SearchBox({
 function MessageBlock({
     message,
     animateWords,
+    scrollTarget,
     loading,
     sources,
     onFollowUp,
@@ -1491,6 +1502,7 @@ function MessageBlock({
 }: {
     message: Message;
     animateWords: boolean;
+    scrollTarget: boolean;
     loading: boolean;
     sources: Source[];
     onFollowUp: (question: string) => void;
@@ -1530,16 +1542,16 @@ function MessageBlock({
                 )}
             </div>
 
-            {answer ? (
-                <MarkdownAnswer content={answer} sources={sources} animateWords={animateWords} />
-            ) : loading ? (
+            <div data-answer-scroll-target={scrollTarget ? "" : undefined}>
+                {answer ? (
+                    <MarkdownAnswer content={answer} sources={sources} animateWords={animateWords} />
+                ) : loading ? (
                     <div className="flex items-center gap-2 text-zinc-600">
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                        <span className="text-xs">
-                            Checking sources…
-                        </span>
+                        <span className="text-xs">Checking sources…</span>
                     </div>
-            ) : null}
+                ) : null}
+            </div>
 
             {showFollowUps && followUps.length > 0 && (
                 <div className="mt-6 border-t border-white/[0.06] pt-4">
